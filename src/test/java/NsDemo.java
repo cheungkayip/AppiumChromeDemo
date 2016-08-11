@@ -39,8 +39,10 @@ public class NsDemo {
     }
 
     @Test
-    public void EnterDestinations() throws MalformedURLException {
+    public void EnterDestinations() throws MalformedURLException, InterruptedException {
         AcceptCookies();
+
+        //Plan een reis van Rotterdam Centraal naar Amsterdam Centraal
         WebElement vanField = driver.findElement(By.id("PLANBAR_LOCATION_LABEL_DEPARTURE"));
         vanField.sendKeys("Rotterdam Centraal");
         WebElement naarField = driver.findElement(By.id("PLANBAR_LOCATION_LABEL_ARRIVAL"));
@@ -49,8 +51,13 @@ public class NsDemo {
         WebElement planButton = driver.findElement(By.xpath("//button[@class='rp-Reisplanbalk__submit button button--arrowRight']"));
         planButton.click();
 
-        //Assert
+        //Selecteer de eerste mogelijkheid
+        WebElement eersteOptie = driver.findElement(By.xpath("//mogelijkheid[1]/a"));
+        eersteOptie.click();
 
+        //Check of het kaartje 15,10 kost
+        WebElement detailOverview = driver.findElement(By.xpath("//reisdetails/div[@class='rp-reisdetails']/div[@class='rp-reisdetails__tileWrapper']"));
+        assert (detailOverview.getText().contains("15,10"));
     }
 
     @After
