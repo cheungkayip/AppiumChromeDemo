@@ -1,13 +1,17 @@
+import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Set;
 
 public class NsDemo {
     private AndroidDriver driver;
@@ -39,7 +43,7 @@ public class NsDemo {
     }
 
     @Test
-    public void EnterDestinations() throws MalformedURLException, InterruptedException {
+    public void EnterDestinations() throws MalformedURLException {
         AcceptCookies();
 
         //Plan een reis van Rotterdam Centraal naar Amsterdam Centraal
@@ -58,6 +62,23 @@ public class NsDemo {
         //Check of het kaartje 15,10 kost
         WebElement detailOverview = driver.findElement(By.xpath("//reisdetails/div[@class='rp-reisdetails']/div[@class='rp-reisdetails__tileWrapper']"));
         assert (detailOverview.getText().contains("15,10"));
+    }
+
+    @Test
+    public void SlideCarousel() throws MalformedURLException, InterruptedException {
+        AcceptCookies();
+        Thread.sleep(5000);
+        WebElement currentImage = driver.findElement(By.xpath("//li[contains(@class,'is-active')]//source"));
+
+        //Tip touchElements worden alleen ondersteund in NATIVE_APP
+        driver.context("NATIVE_APP");
+        new TouchAction(driver).longPress(450, 350).moveTo(20, 350).release().perform();
+        driver.context("CHROMIUM");
+        Thread.sleep(5000);
+        WebElement adjustedImage = driver.findElement(By.xpath("//li[contains(@class,'is-active')]//source"));
+
+        //Vergelijk of de plaatjes verschillen
+        assert (!currentImage.getAttribute("srcset").equals(adjustedImage.getAttribute("srcset")));
     }
 
     @After
