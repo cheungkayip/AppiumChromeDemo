@@ -4,14 +4,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
 
 public class NsDemo {
     private AndroidDriver driver;
